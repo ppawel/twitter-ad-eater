@@ -8,7 +8,7 @@ The module is tested so far only on Android 11 and with the LSPosed framework. F
 
 Implementation of this module is inspired by the Twitter AdKiller module but I decided to create my own module because... why not? :P
 
-# TODO
+## TODO
 
 * Remove promoted trending topics/hashtags
 * Try to find a more efficient way of filtering out promoted content, instead of hooking into the general `ViewGroup.addView` method
