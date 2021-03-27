@@ -21,4 +21,5 @@ Implementation of this module is inspired by the Twitter AdKiller module but I d
 ## TODO
 
 * Remove promoted trending topics/hashtags
+* Remove the "moments" or "stories" section (or whatever it is called...) from the timeline to save space
 * Try to find a more efficient way of filtering out promoted content, instead of hooking into the general `ViewGroup.addView` method
