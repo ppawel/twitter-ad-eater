@@ -20,6 +20,6 @@ jobs:
         run: ./gradlew build
       - uses: actions/upload-artifact@v2
         with:
-          name: apk-release
-          path: app/build/outputs/apk/release/*.apk
+          name: apk
+          path: app/build/outputs/apk/**/*.apk
           if-no-files-found: error
