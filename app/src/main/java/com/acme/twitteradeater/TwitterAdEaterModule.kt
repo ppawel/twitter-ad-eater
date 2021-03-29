@@ -1,7 +1,5 @@
 package com.acme.twitteradeater
 
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
@@ -37,18 +35,24 @@ class TwitterAdEaterModule : IXposedHookLoadPackage {
         val v = param.args[0]
 
         if (v is ViewGroup && v.toString().contains("app:id/row")) {
-            v.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            // Process the view immediately when "addView" is called - new row is being added
+            processView(v)
 
-                val handler = Handler(Looper.myLooper()!!)
-                handler.postDelayed(
-                    {
-                        v.clearAnimation()
-                        v.visibility = if (isPromoted(v)) View.GONE else View.VISIBLE
-                    },
-                    1
-                )
+            v.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+                // Existing row is being reused
+                processView(v)
             }
         }
+    }
+
+    private fun processView(v: View) {
+        // Need to use the event loop, otherwise we don't have the correct visibility of the promoted parts
+        v.postDelayed(
+            {
+                v.visibility = if (isPromoted(v)) View.GONE else View.VISIBLE
+            },
+            1
+        )
     }
 
     private fun isPromoted(v: View): Boolean {
