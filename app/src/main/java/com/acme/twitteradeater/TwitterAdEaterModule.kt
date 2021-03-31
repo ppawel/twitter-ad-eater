@@ -49,15 +49,21 @@ class TwitterAdEaterModule : IXposedHookLoadPackage {
         // Need to use the event loop, otherwise we don't have the correct visibility of the promoted parts
         v.postDelayed(
             {
-                v.visibility = if (isPromoted(v)) View.GONE else View.VISIBLE
+                if (isPromoted(v)) {
+                    v.visibility = View.GONE
+                    logcat("Removing ad: view = %s", v)
+                    logView(v.parent as View)
+                } else {
+                    v.visibility = View.VISIBLE
+                }
             },
             1
         )
     }
 
     private fun isPromoted(v: View): Boolean {
-        if (v.toString().contains("tweet_promoted_badge_bottom") && v.visibility == View.VISIBLE) {
-            return v !is ViewStub
+        if (v.toString().contains("promoted") && v.visibility == View.VISIBLE) {
+            return true
         }
         if (v is ViewGroup) {
             return v.children.any { isPromoted(it) }

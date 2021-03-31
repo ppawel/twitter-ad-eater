@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.core.view.children
 import de.robv.android.xposed.XposedBridge
 
-private val TAG: String = "TwitterAdEater"
+private const val TAG: String = "TwitterAdEater"
 
 fun log(message: String, vararg va: Any?) {
     XposedBridge.log(String.format(message, *va))
@@ -16,11 +16,39 @@ fun logcat(message: String, vararg va: Any?) {
     Log.i(TAG, String.format(message, *va))
 }
 
-fun logView(v: View, ind: String = "") {
-    logcat("%sView %s", ind, v.toString())
+fun logerr(message: String, vararg va: Any?) {
+    Log.e(TAG, String.format(message, *va))
+}
+
+fun logView(v: View, ind: String = "--") {
+    var desc = v.toString()
+    val cls = v.javaClass
+
+    try {
+        when (cls.name) {
+            "androidx.appcompat.widget.AppCompatTextView" -> {
+                desc = cls.getMethod("getText").invoke(v).toString()
+            }
+            "com.twitter.ui.widget.TypefacesTextView" -> {
+                desc = cls.getMethod("getText").invoke(v).toString()
+            }
+            "com.twitter.ui.widget.TextLayoutView" -> {
+                desc = cls.getMethod("getText").invoke(v).toString()
+            }
+            "com.twitter.ui.widget.UnpaddedTextLayoutView" -> {
+                desc = cls.getMethod("getText").invoke(v).toString()
+            }
+            //"com.twitter.ui.user.UserLabelView" -> {
+            //    desc = cls.getMethod("getText").invoke(v).toString()
+            //}
+        }
+    } catch (e: NoSuchMethodException) {
+        logerr("Failed to describe view %s", v)
+    }
+
+    logcat("%sView [%s]: %s", ind, v.javaClass.name, desc)
     if (v is ViewGroup) {
-        //logcat(v.children.joinToString("\n") { it.toString() })
-        v.children.forEach { logView(it, "$ind ") }
+        v.children.forEach { logView(it, "$ind--") }
     }
 }
 
