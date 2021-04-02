@@ -26,8 +26,12 @@
             android:name="xposeddescription"
             android:value="Twitter Ads... nom nom nom..." />
         <meta-data
+            android:name="xposedsharedprefs"
+            android:value="true" />
+        <meta-data
             android:name="xposedminversion"
-            android:value="82" />
+            android:value="93" />
+
     </application>
 
 </manifest>

@@ -2,21 +2,25 @@ package com.acme.twitteradeater
 
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewStub
 import androidx.core.view.children
-import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.XC_MethodHook
-import de.robv.android.xposed.XposedBridge
-import de.robv.android.xposed.XposedHelpers
+import de.robv.android.xposed.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
+
 
 class TwitterAdEaterModule : IXposedHookLoadPackage {
 
     override fun handleLoadPackage(lpparam: LoadPackageParam?) {
         log("NOM NOM NOM %s", lpparam!!.packageName)
 
+        if (lpparam.packageName == "com.acme.twitteradeater") {
+            Utils.readPrefs()
+            logcat("prefs = %s", Utils.prefs.all)
+        }
+
         if (lpparam.packageName == "com.twitter.android") {
-            log("Twitter app loaded... (package = %s)", lpparam.packageName)
+            Utils.readPrefs()
+            logcat("prefs = %s", Utils.prefs.all)
+            log("Twitter app loaded, initializing hooks...")
             initHooks(lpparam)
         }
     }
@@ -51,8 +55,10 @@ class TwitterAdEaterModule : IXposedHookLoadPackage {
             {
                 if (isPromoted(v)) {
                     v.visibility = View.GONE
-                    logcat("Removing ad: view = %s", v)
-                    logView(v.parent as View)
+                    if (debugLogsEnabled()) {
+                        logcat("Removing ad: view = %s", v)
+                        logView(v.parent as View)
+                    }
                 } else {
                     v.visibility = View.VISIBLE
                 }

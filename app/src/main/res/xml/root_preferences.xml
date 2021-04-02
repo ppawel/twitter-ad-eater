@@ -15,21 +15,21 @@
             app:title="@string/reply_title"
             app:useSimpleSummaryProvider="true" />
 
-    </PreferenceCategory>
+    </PreferenceCategory-->
 
-    <PreferenceCategory app:title="@string/sync_header">
-
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
+    <PreferenceCategory>
 
         <SwitchPreferenceCompat
+            app:key="debugLogs"
+            app:title="Debug logs" />
+
+        <!--SwitchPreferenceCompat
             app:dependency="sync"
             app:key="attachment"
             app:summaryOff="@string/attachment_summary_off"
             app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+            app:title="@string/attachment_title" /-->
 
-    </PreferenceCategory-->
+    </PreferenceCategory>
 
 </PreferenceScreen>
