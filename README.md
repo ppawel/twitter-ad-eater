@@ -1,6 +1,6 @@
 # Twitter Ad Eater
 
-Twitter Ad Eater is a module for the Xposed/[LSPosed](https://github.com/LSPosed/LSPosed) framework that attempts to remove ads from the Twitter Android application.
+Twitter Ad Eater is a module for the Xposed/EdXPosed/[LSPosed](https://github.com/LSPosed/LSPosed) framework that attempts to remove ads from the Twitter Android application.
 
 # Installation
 
@@ -23,3 +23,4 @@ Implementation of this module is inspired by the Twitter AdKiller module but I d
 * Remove promoted trending topics/hashtags
 * Remove the "moments" or "stories" section (or whatever it is called...) from the timeline to save space
 * Try to find a more efficient way of filtering out promoted content, instead of hooking into the general `ViewGroup.addView` method
+* Filtering out Tweets by keywords
